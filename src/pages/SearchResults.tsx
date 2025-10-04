@@ -18,11 +18,22 @@ export const SearchResults: React.FC = () => {
 
   useEffect(() => {
     // Initialize filters from URL params
-    const query = searchParams.get('q') || undefined;
+    const queryParam = searchParams.get('q');
+    const query = queryParam && queryParam.trim() !== '' ? queryParam : undefined;
     const lat = searchParams.get('lat');
     const lng = searchParams.get('lng');
     const cuisine = searchParams.get('cuisine') || undefined;
     const nearby = searchParams.get('nearby') === 'true';
+
+    console.log('🔄 SearchResults useEffect triggered:', {
+      queryParam: `"${queryParam}"`,
+      query,
+      cuisine,
+      lat,
+      lng,
+      nearby,
+      allParams: Object.fromEntries(searchParams.entries())
+    });
 
     const initialFilters: SearchFilters = {
       query,
@@ -39,8 +50,12 @@ export const SearchResults: React.FC = () => {
 
     // Perform search if we have query or location
     if (query || initialFilters.location || nearby) {
+      console.log('🚀 Triggering search with filters:', initialFilters);
       search(initialFilters);
+    } else {
+      console.log('⚠️ No search triggered - missing query and location');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, latitude, longitude]);
 
   const handleSearch = (query: string) => {

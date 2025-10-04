@@ -24,6 +24,12 @@ export const Home: React.FC = () => {
   const handleCuisineClick = (cuisineId: string) => {
     const cuisine = cuisineCategories.find((c) => c.id === cuisineId);
     if (cuisine) {
+      console.log('🏠 Home - Category clicked:', {
+        cuisineId,
+        searchTerm: cuisine.searchTerms[0],
+        hasLocation: !!(latitude && longitude)
+      });
+      
       const params = new URLSearchParams();
       params.set('q', cuisine.searchTerms[0]);
       params.set('cuisine', cuisineId);
@@ -31,6 +37,8 @@ export const Home: React.FC = () => {
         params.set('lat', latitude.toString());
         params.set('lng', longitude.toString());
       }
+      
+      console.log('🏠 Home - Navigating to:', `/search?${params.toString()}`);
       navigate(`/search?${params.toString()}`);
     }
   };

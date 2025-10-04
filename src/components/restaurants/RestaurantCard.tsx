@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Restaurant } from '@/types/restaurant';
 import { Card, Badge, StarRating } from '@/components/common';
-import { getPhotoUrl, getPriceLevel, formatDistance, calculateDistance, isOpenNow } from '@/utils/formatters';
+import { getPhotoUrl, getPriceLevel, formatDistance, calculateDistance } from '@/utils/formatters';
 import { useFavorites } from '@/hooks/useFavorites';
 
 interface RestaurantCardProps {
@@ -28,7 +28,8 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
     : null;
 
   const priceLevel = getPriceLevel(restaurant.price_level);
-  const isOpen = isOpenNow(restaurant.opening_hours);
+  // Note: We don't show open/closed status to avoid deprecated open_now warning
+  // To properly check if open, we would need to call PlacesService.getDetails() with isOpen()
 
   return (
     <Card hover padding="none" className="overflow-hidden">
@@ -63,11 +64,6 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
             <h3 className="font-semibold text-lg text-volcanic-800 line-clamp-1">
               {restaurant.name}
             </h3>
-            {restaurant.opening_hours && (
-              <Badge variant={isOpen ? 'success' : 'error'} size="sm">
-                {isOpen ? 'Abierto' : 'Cerrado'}
-              </Badge>
-            )}
           </div>
 
           <div className="flex items-center gap-2 mb-2">

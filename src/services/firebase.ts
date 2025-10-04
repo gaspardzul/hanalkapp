@@ -156,7 +156,7 @@ export const addFavorite = async (
     // Convert photo objects to URLs (photos contain functions that can't be serialized)
     if (restaurant.photos && restaurant.photos.length > 0) {
       try {
-        const photo = restaurant.photos[0];
+        const photo = restaurant.photos[0] as any; // Google Places PlacePhoto object
         // If photo has getUrl method, get the URL string
         if (photo && typeof photo.getUrl === 'function') {
           const photoUrl = photo.getUrl({ maxWidth: 400 });

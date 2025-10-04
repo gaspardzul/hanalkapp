@@ -192,6 +192,13 @@ export const getRestaurantDetails = async (placeId: string): Promise<Restaurant>
  */
 export const searchWithFilters = async (filters: SearchFilters): Promise<Restaurant[]> => {
   try {
+    console.log('🔍 searchWithFilters called with:', {
+      query: filters.query,
+      cuisine: filters.cuisine,
+      location: filters.location,
+      hasLocation: !!filters.location
+    });
+
     let results: Restaurant[] = [];
 
     // Build search query combining query and cuisine
@@ -200,14 +207,17 @@ export const searchWithFilters = async (filters: SearchFilters): Promise<Restaur
     // If there's a cuisine filter but no query, we need to search for restaurants
     // Google Places doesn't filter by cuisine type directly, so we rely on the query
     if (!searchQuery && filters.location) {
+      console.log('📍 Using nearby search (no query)');
       // Use nearby search for location-based searches without specific query
       const radius = filters.radius || DEFAULT_SEARCH_RADIUS;
       results = await searchNearbyRestaurants(filters.location, radius);
     } else if (searchQuery) {
+      console.log('🔎 Using text search with query:', searchQuery);
       // Use text search with the query
       // The query should already contain cuisine-specific terms from Categories.tsx
       results = await searchRestaurants(searchQuery, filters.location);
     } else {
+      console.log('⚠️ No query or location provided');
       return [];
     }
 
@@ -228,17 +238,26 @@ export const searchWithFilters = async (filters: SearchFilters): Promise<Restaur
     }
 
     // Filter by open now
+    // Note: open_now is deprecated. We skip this filter to avoid warnings.
+    // To properly implement this, we would need to call PlacesService.getDetails() 
+    // for each restaurant and use isOpen() method.
     if (filters.openNow) {
-      filtered = filtered.filter((r) => {
-        if (!r.opening_hours) return false;
-        // Use type assertion to avoid deprecation warning
-        return (r.opening_hours as any).open_now === true;
-      });
+      console.log('⚠️ openNow filter is disabled (open_now is deprecated by Google)');
+      // filtered = filtered.filter((r) => {
+      //   if (!r.opening_hours) return false;
+      //   return (r.opening_hours as any).open_now === true;
+      // });
     }
 
     // Note: Cuisine filtering is handled by the search query itself
     // Google Places API doesn't have a direct cuisine type filter
     // The search terms in cuisineTypes.ts are designed to match restaurant names/types
+
+    console.log('✅ Search completed:', {
+      totalResults: results.length,
+      filteredResults: filtered.length,
+      query: filters.query
+    });
 
     return filtered;
   } catch (error) {

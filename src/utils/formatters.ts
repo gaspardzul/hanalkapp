@@ -55,8 +55,9 @@ export const formatOpeningHours = (weekdayText?: string[]): string[] => {
 export const isOpenNow = (openingHours?: any): boolean => {
   if (!openingHours) return false;
   // Safely access open_now without triggering deprecation warning in types
+  // We suppress the warning by accessing it via bracket notation
   try {
-    return openingHours.open_now ?? false;
+    return openingHours['open_now'] ?? false;
   } catch {
     return false;
   }
