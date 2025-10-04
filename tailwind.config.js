@@ -1,0 +1,70 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Paleta oficial HanalKapp
+        jade: {
+          DEFAULT: '#136F63',
+          50: '#E8F4F2',
+          100: '#D1E9E6',
+          200: '#A3D3CC',
+          300: '#75BDB3',
+          400: '#47A799',
+          500: '#136F63',
+          600: '#0F594F',
+          700: '#0B433B',
+          800: '#072C28',
+          900: '#031614',
+        },
+        gold: {
+          DEFAULT: '#F9A825',
+          50: '#FEF7E6',
+          100: '#FDEFCC',
+          200: '#FBDF99',
+          300: '#F9CF66',
+          400: '#F7BF33',
+          500: '#F9A825',
+          600: '#C7861E',
+          700: '#956516',
+          800: '#63430F',
+          900: '#312207',
+        },
+        sand: {
+          DEFAULT: '#FAEBD7',
+          50: '#FFFFFF',
+          100: '#FFFFFF',
+          200: '#FFFFFF',
+          300: '#FEF9F3',
+          400: '#FCF2E5',
+          500: '#FAEBD7',
+          600: '#F3D4AC',
+          700: '#ECBD81',
+          800: '#E5A656',
+          900: '#DE8F2B',
+        },
+        volcanic: {
+          DEFAULT: '#4B3832',
+          50: '#E8E5E4',
+          100: '#D1CBC8',
+          200: '#A39791',
+          300: '#75635A',
+          400: '#604D46',
+          500: '#4B3832',
+          600: '#3C2D28',
+          700: '#2D221E',
+          800: '#1E1614',
+          900: '#0F0B0A',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [],
+}
