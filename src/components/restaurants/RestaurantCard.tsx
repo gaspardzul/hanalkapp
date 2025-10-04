@@ -14,9 +14,10 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
   userLocation,
 }) => {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const photoUrl = restaurant.photos?.[0]
-    ? getPhotoUrl(restaurant.photos[0], 400)
-    : '/placeholder-restaurant.jpg';
+  
+  // Check if restaurant has photos
+  const hasPhoto = restaurant.photos && restaurant.photos.length > 0;
+  const photoUrl = hasPhoto ? getPhotoUrl(restaurant.photos![0], 400) : undefined;
 
   const distance = userLocation
     ? calculateDistance(
@@ -35,12 +36,31 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
     <Card hover padding="none" className="overflow-hidden">
       <Link to={`/restaurant/${restaurant.place_id}`}>
         <div className="relative h-48 bg-volcanic-200">
-          <img
-            src={photoUrl}
-            alt={restaurant.name}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt={restaurant.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            // Placeholder SVG for restaurants without photos
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-volcanic-100 to-volcanic-200">
+              <svg
+                className="w-24 h-24 text-volcanic-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+            </div>
+          )}
           {distance !== null && (
             <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium text-volcanic-700">
               📍 {formatDistance(distance)}

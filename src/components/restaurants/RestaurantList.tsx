@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Restaurant } from '@/types/restaurant';
 import { RestaurantCard } from './RestaurantCard';
 import { Loading } from '@/components/common';
@@ -15,6 +16,36 @@ export const RestaurantList: React.FC<RestaurantListProps> = ({
   error = null,
   userLocation,
 }) => {
+  const [displayCount, setDisplayCount] = useState(12);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  // Reset display count when restaurants change
+  useEffect(() => {
+    setDisplayCount(12);
+  }, [restaurants]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && displayCount < restaurants.length) {
+          setDisplayCount((prev) => Math.min(prev + 12, restaurants.length));
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [displayCount, restaurants.length]);
   if (loading) {
     return <Loading size="lg" text="Buscando restaurantes..." />;
   }
@@ -43,15 +74,37 @@ export const RestaurantList: React.FC<RestaurantListProps> = ({
     );
   }
 
+  const displayedRestaurants = restaurants.slice(0, displayCount);
+  const hasMore = displayCount < restaurants.length;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {restaurants.map((restaurant) => (
-        <RestaurantCard
-          key={restaurant.place_id}
-          restaurant={restaurant}
-          userLocation={userLocation}
-        />
-      ))}
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {displayedRestaurants.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant.place_id}
+            restaurant={restaurant}
+            userLocation={userLocation}
+          />
+        ))}
+      </div>
+
+      {/* Infinite scroll trigger */}
+      {hasMore && (
+        <div ref={observerTarget} className="flex justify-center py-8">
+          <div className="flex items-center gap-2 text-volcanic-600">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-jade"></div>
+            <span>Cargando más restaurantes...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Show count */}
+      {!hasMore && restaurants.length > 12 && (
+        <div className="text-center py-6 text-volcanic-600">
+          <p>Mostrando todos los {restaurants.length} restaurantes</p>
+        </div>
+      )}
     </div>
   );
 };
