@@ -28,10 +28,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
           {
             // Variants
-            'bg-jade text-white hover:bg-jade-600 focus:ring-jade-500': variant === 'primary',
-            'bg-gold text-volcanic hover:bg-gold-600 focus:ring-gold-500': variant === 'secondary',
-            'border-2 border-jade text-jade hover:bg-jade-50 focus:ring-jade-500': variant === 'outline',
-            'text-jade hover:bg-jade-50 focus:ring-jade-500': variant === 'ghost',
+            'bg-yelp text-white hover:bg-yelp-600 focus:ring-yelp-500 shadow-md font-semibold': variant === 'primary',
+            'bg-white text-yelp border-2 border-yelp hover:bg-yelp-50 focus:ring-yelp-500 font-semibold': variant === 'secondary',
+            'border-2 border-neutral-300 text-neutral-700 hover:border-yelp hover:text-yelp focus:ring-yelp-500': variant === 'outline',
+            'text-yelp hover:bg-yelp-50 focus:ring-yelp-500': variant === 'ghost',
 
             // Sizes
             'px-3 py-1.5 text-sm': size === 'sm',

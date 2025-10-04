@@ -32,7 +32,7 @@ export const BottomNav: React.FC = () => {
   };
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-volcanic-200 shadow-lg z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-200 shadow-lg z-50">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
@@ -42,10 +42,10 @@ export const BottomNav: React.FC = () => {
               key={item.path}
               to={item.path}
               className={clsx(
-                'flex flex-col items-center justify-center w-full h-full transition-colors',
+                'flex flex-col items-center justify-center w-full h-full transition-all',
                 {
-                  'text-jade bg-jade-50': isActive,
-                  'text-volcanic-600 hover:text-jade': !isActive,
+                  'text-yelp border-t-2 border-yelp': isActive,
+                  'text-neutral-600 hover:text-yelp': !isActive,
                 }
               )}
             >
@@ -60,10 +60,10 @@ export const BottomNav: React.FC = () => {
           <button
             onClick={handleViewToggle}
             className={clsx(
-              'flex flex-col items-center justify-center w-full h-full transition-colors',
+              'flex flex-col items-center justify-center w-full h-full transition-all',
               {
-                'text-jade bg-jade-50': viewMode === 'map',
-                'text-volcanic-600 hover:text-jade': viewMode !== 'map',
+                'text-yelp border-t-2 border-yelp': viewMode === 'map',
+                'text-neutral-600 hover:text-yelp': viewMode !== 'map',
               }
             )}
           >

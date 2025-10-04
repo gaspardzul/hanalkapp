@@ -16,30 +16,32 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-jade text-white shadow-md sticky top-0 z-50">
+    <header className="bg-white shadow-md sticky top-0 z-50 border-b border-neutral-200">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl">🍽️</span>
-            <h1 className="text-xl md:text-2xl font-bold">HanalKapp</h1>
+          <Link to="/" className="flex items-center gap-2 group">
+            <span className="text-2xl group-hover:scale-110 transition-transform">🍽️</span>
+            <h1 className="text-xl md:text-2xl font-bold text-yelp">
+              HanalKapp
+            </h1>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
             <Link
               to="/"
-              className="hover:text-gold transition-colors"
+              className="text-neutral-700 hover:text-yelp transition-colors font-medium"
             >
               Inicio
             </Link>
             <Link
               to="/categories"
-              className="hover:text-gold transition-colors"
+              className="text-neutral-700 hover:text-yelp transition-colors font-medium"
             >
               Categorías
             </Link>
             <Link
               to="/favorites"
-              className="hover:text-gold transition-colors flex items-center gap-1"
+              className="text-neutral-700 hover:text-yelp transition-colors flex items-center gap-1 font-medium"
             >
               <span>❤️</span>
               Favoritos
@@ -51,16 +53,16 @@ export const Header: React.FC = () => {
                 {user ? (
                   <button
                     onClick={handleAuthClick}
-                    className="flex items-center gap-2 hover:text-gold transition-colors"
+                    className="flex items-center gap-2 text-neutral-700 hover:text-yelp transition-colors"
                   >
                     {user.photoURL ? (
                       <img
                         src={user.photoURL}
                         alt={user.displayName || 'User'}
-                        className="w-8 h-8 rounded-full border-2 border-white"
+                        className="w-8 h-8 rounded-full border-2 border-yelp"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-gold text-volcanic-800 flex items-center justify-center font-semibold">
+                      <div className="w-8 h-8 rounded-full bg-yelp text-white flex items-center justify-center font-semibold">
                         {user.displayName?.charAt(0) || '?'}
                       </div>
                     )}
@@ -69,7 +71,7 @@ export const Header: React.FC = () => {
                 ) : (
                   <Button
                     onClick={handleAuthClick}
-                    variant="secondary"
+                    variant="primary"
                     size="sm"
                     disabled={loading}
                   >
@@ -79,17 +81,17 @@ export const Header: React.FC = () => {
 
                 {/* User Menu Dropdown */}
                 {showUserMenu && user && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 text-volcanic-800">
-                    <div className="px-4 py-2 border-b border-volcanic-200">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 text-neutral-800 border border-neutral-200">
+                    <div className="px-4 py-2 border-b border-neutral-200">
                       <p className="font-semibold">{user.displayName}</p>
-                      <p className="text-sm text-volcanic-600 truncate">{user.email}</p>
+                      <p className="text-sm text-neutral-600 truncate">{user.email}</p>
                     </div>
                     <button
                       onClick={async () => {
                         setShowUserMenu(false);
                         await logout();
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-volcanic-100 transition-colors"
+                      className="w-full text-left px-4 py-2 hover:bg-neutral-50 transition-colors"
                     >
                       Cerrar sesión
                     </button>
